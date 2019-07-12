@@ -12,31 +12,35 @@ export default class main extends Component {
     };
     componentDidMount(){
         this.loadProducts();
-
     }
     loadProducts = async (page = 1) => {
         const response = await api.get(`/products?page=${page}`);
+        const response = await api.post('/api/usuario/login',{
+            username:'ahdahdjksad',
+            password:'sadasd'
+        });
+
 
         const {docs, ...productInfo} = response.data;
 
         this.setState({ products: docs, productInfo, page });
 
     };
-        prevPage = () => {
-            const { page, productInfo } = this.state;
-             if(page === 1) return;
+    prevPage = () => {
+        const { page } = this.state;
+            if(page === 1) return;
 
-             const pageNumber = page - 1;
-             this.loadProducts(pageNumber);
+            const pageNumber = page - 1;
+            this.loadProducts(pageNumber);
+        
+    };
+    nextPage = () => {
+        const { page, productInfo } = this.state;
+            if(page === productInfo.pages) return;
+
+            const pageNumber = page + 1;
             
-        };
-        nextPage = () => {
-            const { page, productInfo } = this.state;
-             if(page === productInfo.pages) return;
-
-             const pageNumber = page + 1;
-             
-             this.loadProducts(pageNumber);
+            this.loadProducts(pageNumber);
     };
     render(){
 
